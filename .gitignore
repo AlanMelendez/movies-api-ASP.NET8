@@ -1,0 +1,65 @@
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.la
+*.al
+*.libs
+*.dll
+*.exe
+*.so
+*.dylib
+*.lib
+
+# Backup files
+*.bak
+*.swp
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Build folders (MSBuild)
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+
+# Project lock files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio Code files
+.vscode/
+
+# Visual Studio temporary files
+.vs/
+
+# Rider project files
+.idea/
+
+# Azure Web App deployment files
+.scm/
+
+# JetBrains Rider
+.idea/
+
+# Log, backup, and temporary files
+logs/
+*.log
+*.backup
+*.bak
+*.swp
+*.tmp
