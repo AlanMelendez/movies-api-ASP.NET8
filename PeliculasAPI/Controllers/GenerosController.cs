@@ -1,3 +1,5 @@
+using APP_PELICULAS.Entities;
+using APP_PELICULAS.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PeliculasAPI.Controllers
@@ -6,21 +8,29 @@ namespace PeliculasAPI.Controllers
     [ApiController]
     public class GenerosController : ControllerBase
     {
+          private readonly RepositoryInMemory _repositoryInMemory;
+
         public GenerosController()
         {
-
+            _repositoryInMemory = new RepositoryInMemory();
         }
+
 
         [HttpGet]
         public ActionResult Get()
         {
-            return Ok("Lista de géneros de películas");
+            return Ok("Get controllers activated");
         }
 
-        [HttpGet("ObtenerGeneros")]
-        public ActionResult Get(int id)
+        [HttpGet("Listado")]
+        public IEnumerable<Genero> GetGeneros()
         {
-            return Ok($"Género con id {id}");
+            var repository = new RepositoryInMemory();
+            var generos = repository.getAllGenders();
+
+            return generos;
+            //return _repositoryInMemory.getAllGenders();
         }
+
     }
 }
