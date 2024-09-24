@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 //Agregamos el servicio de cache para las peticiones.
-builder.Services.AddResponseCaching(
+builder.Services.AddOutputCache(
     options =>
     {
         //Tiempo de expiración de la cache.

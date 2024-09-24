@@ -41,6 +41,7 @@ namespace PeliculasAPI.Controllers
 
 
         [HttpGet("{id}")]
+        [OutputCache]
         public async Task<ActionResult<Genero>> GetGenero(int id)
         {
             var genero = await _repositoryInMemory.getGenderById(id);
