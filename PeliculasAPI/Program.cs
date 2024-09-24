@@ -8,6 +8,16 @@ builder.Services.AddSwaggerGen();
 //Mapeamos los controladores, para poder crear nuestra carpeta y controladores. (1)
 builder.Services.AddControllers();
 
+//Agregamos el servicio de cache para las peticiones.
+builder.Services.AddResponseCaching(
+    options =>
+    {
+        //Tiempo de expiración de la cache.
+        options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(10); 
+        
+    });
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,8 +49,10 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapControllers(); //Mapeamos los controladores, para poder crear nuestra carpeta y controladores. (2)
 
+app.UseOutputCache(); //Agregamos el servicio de cache para las peticiones.
+
+app.MapControllers(); //Mapeamos los controladores, para poder crear nuestra carpeta y controladores. (2)
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
