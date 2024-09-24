@@ -23,5 +23,12 @@ namespace APP_PELICULAS.Services
         {
             return _generos;
         }
+
+
+        public async Task<Genero?> getGenderById(int id)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(2));
+            return _generos.FirstOrDefault(x => x.Id == id); //return gender or null
+        }
     }
 }

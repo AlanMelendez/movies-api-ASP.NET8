@@ -8,19 +8,25 @@ namespace PeliculasAPI.Controllers
     [ApiController]
     public class GenerosController : ControllerBase
     {
-          private readonly RepositoryInMemory _repositoryInMemory;
+        private readonly RepositoryInMemory _repositoryInMemory;
 
         public GenerosController()
         {
             _repositoryInMemory = new RepositoryInMemory();
         }
 
+        [HttpGet("Listado/{id}")]
+        // [HttpGet("{id}")]
 
-        [HttpGet]
-        public ActionResult Get()
+        public Genero? Get(int id)
         {
-            return Ok("Get controllers activated");
+            var repository = new RepositoryInMemory();
+            var genero = repository.getGenderById(id);
+
+            return genero;
         }
+
+
 
         [HttpGet("Listado")]
         public IEnumerable<Genero> GetGeneros()
@@ -30,6 +36,38 @@ namespace PeliculasAPI.Controllers
 
             return generos;
             //return _repositoryInMemory.getAllGenders();
+        }
+
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Genero>> GetGenero(int id)
+        {
+            var genero = await _repositoryInMemory.getGenderById(id);
+            if (genero == null)
+            {
+                return NotFound();
+            }
+            return genero;
+        }
+
+
+        [HttpPost]
+        public void Post()
+        {
+            //return Ok("Post controllers activated");
+        }
+
+        [HttpPut]
+        public void Put()
+        {
+            //return Ok("Put controllers activated");
+        }
+
+        [HttpDelete]
+        public void Delete()
+        {
+            //return Ok("Delete controllers activated");
         }
 
     }

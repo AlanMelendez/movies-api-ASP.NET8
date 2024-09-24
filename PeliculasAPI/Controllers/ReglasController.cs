@@ -88,11 +88,11 @@ namespace PeliculasAPI.Controllers
         // Regla 9: Ruta con expresión regular para parámetros
         // El parámetro "codigo" debe seguir una expresión regular, en este caso 3 letras seguidas por 3 dígitos.
         // Ejemplo: /Reglas/Codigo/ABC123 será válido, pero /Reglas/Codigo/123ABC no lo será.
-        [HttpGet("Codigo/{codigo:regex(^[A-Z]{3}[0-9]{3}$)}")]
-        public IActionResult Codigo(string codigo)
-        {
-            return Ok($"Código válido: {codigo}");
-        }
+        // [HttpGet("Codigo/{codigo:regex(^[A-Z]{3}[0-9]{3}$)}")]
+        // public IActionResult Codigo(string codigo)
+        // {
+        //     return Ok($"Código válido: {codigo}");
+        // }
 
         // Regla 10: Ruta con una lista de parámetros permitidos
         // Esta ruta solo permite ciertos valores específicos para el parámetro "categoria".
