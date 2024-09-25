@@ -1,6 +1,7 @@
 using APP_PELICULAS.Entities;
 using APP_PELICULAS.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace PeliculasAPI.Controllers
 {
@@ -14,18 +15,6 @@ namespace PeliculasAPI.Controllers
         {
             _repositoryInMemory = new RepositoryInMemory();
         }
-
-        [HttpGet("Listado/{id}")]
-        // [HttpGet("{id}")]
-
-        public Genero? Get(int id)
-        {
-            var repository = new RepositoryInMemory();
-            var genero = repository.getGenderById(id);
-
-            return genero;
-        }
-
 
 
         [HttpGet("Listado")]
@@ -54,9 +43,9 @@ namespace PeliculasAPI.Controllers
 
 
         [HttpPost]
-        public void Post()
+        public void Post([FromBody] Genero genero)
         {
-            //return Ok("Post controllers activated");
+             Ok("Post controllers activated");
         }
 
         [HttpPut]
