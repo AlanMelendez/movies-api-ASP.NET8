@@ -1,3 +1,5 @@
+using APP_PELICULAS.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,11 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddOutputCache(
     options =>
     {
-        //Tiempo de expiración de la cache.
-        options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(10); 
-        
-    });
+        options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(10);
+    }    
 );
+
+// For inject dependency
+//builder.Services.AddTransient<RepositoryInMemory>();
 
 var app = builder.Build();
 

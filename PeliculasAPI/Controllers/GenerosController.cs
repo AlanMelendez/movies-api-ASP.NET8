@@ -11,17 +11,16 @@ namespace PeliculasAPI.Controllers
     {
         private readonly RepositoryInMemory _repositoryInMemory;
 
-        public GenerosController()
+        public GenerosController(RepositoryInMemory repository)
         {
-            _repositoryInMemory = new RepositoryInMemory();
+            _repositoryInMemory = repository;
         }
 
 
         [HttpGet("Listado")]
         public IEnumerable<Genero> GetGeneros()
         {
-            var repository = new RepositoryInMemory();
-            var generos = repository.getAllGenders();
+            var generos = _repositoryInMemory.getAllGenders();
 
             return generos;
             //return _repositoryInMemory.getAllGenders();
@@ -43,9 +42,15 @@ namespace PeliculasAPI.Controllers
 
 
         [HttpPost]
-        public void Post([FromBody] Genero genero)
+        public IActionResult Post([FromBody] Genero genero)
         {
-             Ok("Post controllers activated");
+             var existGenderWithDealName= _repositoryInMemory.ExistsGender(genero.Nombre);
+
+            if (existGenderWithDealName) { 
+                return BadRequest($"If exist gender with this name {genero.Nombre}");
+            }
+
+            return Ok();           
         }
 
         [HttpPut]

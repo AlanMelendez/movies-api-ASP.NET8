@@ -24,6 +24,11 @@ namespace APP_PELICULAS.Services
             return _generos;
         }
 
+        public bool ExistsGender(string name)
+        {
+            return _generos.Any(gender=> gender.Nombre == name);
+        }
+
 
         public async Task<Genero?> getGenderById(int id)
         {
