@@ -2,6 +2,7 @@ using APP_PELICULAS.Entities;
 using APP_PELICULAS.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
+using PeliculasAPI.Interfaces;
 
 namespace PeliculasAPI.Controllers
 {
@@ -9,11 +10,23 @@ namespace PeliculasAPI.Controllers
     [ApiController]
     public class GenerosController : ControllerBase
     {
-        private readonly RepositoryInMemory _repositoryInMemory;
+        private readonly IRepositoy _repositoryInMemory;
 
-        public GenerosController(RepositoryInMemory repository)
+        public GenerosController(IRepositoy repository)
         {
             _repositoryInMemory = repository;
+        }
+
+        [HttpGet("{id}")]
+        [OutputCache]
+        public async Task<ActionResult<Genero>> GetGenero(int id)
+        {
+            var genero = await _repositoryInMemory.getGenderById(id);
+            if (genero == null)
+            {
+                return NotFound();
+            }
+            return genero;
         }
 
 
@@ -28,17 +41,7 @@ namespace PeliculasAPI.Controllers
 
 
 
-        [HttpGet("{id}")]
-        [OutputCache]
-        public async Task<ActionResult<Genero>> GetGenero(int id)
-        {
-            var genero = await _repositoryInMemory.getGenderById(id);
-            if (genero == null)
-            {
-                return NotFound();
-            }
-            return genero;
-        }
+        
 
 
         [HttpPost]

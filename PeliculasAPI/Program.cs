@@ -1,4 +1,5 @@
 using APP_PELICULAS.Services;
+using PeliculasAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ builder.Services.AddOutputCache(
 );
 
 // For inject dependency
-//builder.Services.AddTransient<RepositoryInMemory>();
+builder.Services.AddTransient<IRepositoy ,RepositoryInMemory>();
 
 var app = builder.Build();
 

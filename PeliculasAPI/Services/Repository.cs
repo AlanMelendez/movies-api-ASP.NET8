@@ -1,8 +1,9 @@
 using APP_PELICULAS.Entities;
+using PeliculasAPI.Interfaces;
 
 namespace APP_PELICULAS.Services
 {
-    public class RepositoryInMemory
+    public class RepositoryInMemory: IRepositoy
     {
         public List<Genero> _generos { get; set; }
         public RepositoryInMemory()
