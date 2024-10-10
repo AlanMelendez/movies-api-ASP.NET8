@@ -10,15 +10,18 @@ namespace PeliculasAPI.Controllers
     [ApiController]
     public class GenerosController : ControllerBase
     {
+        private const string cacheTag = "genders";
         private readonly IRepositoy _repositoryInMemory;
+        private readonly IOutputCacheStore _outputCacheStore;
 
-        public GenerosController(IRepositoy repository)
+        public GenerosController(IRepositoy repository, IOutputCacheStore outputCacheStore)
         {
             _repositoryInMemory = repository;
+            _outputCacheStore = outputCacheStore;
         }
 
         [HttpGet("{id}")]
-        [OutputCache]
+        [OutputCache(Tags =[cacheTag])]
         public async Task<ActionResult<Genero>> GetGenero(int id)
         {
             var genero = await _repositoryInMemory.getGenderById(id);
@@ -31,6 +34,8 @@ namespace PeliculasAPI.Controllers
 
 
         [HttpGet("Listado")]
+        [OutputCache(Tags = [cacheTag])]
+
         public IEnumerable<Genero> GetGeneros()
         {
             var generos = _repositoryInMemory.getAllGenders();
@@ -39,19 +44,17 @@ namespace PeliculasAPI.Controllers
             //return _repositoryInMemory.getAllGenders();
         }
 
-
-
-        
-
-
         [HttpPost]
-        public IActionResult Post([FromBody] Genero genero)
+        [OutputCache(Tags = [cacheTag])]
+        public async Task< IActionResult> Post([FromBody] Genero genero)
         {
              var existGenderWithDealName= _repositoryInMemory.ExistsGender(genero.Nombre);
 
             if (existGenderWithDealName) { 
                 return BadRequest($"If exist gender with this name {genero.Nombre}");
             }
+
+            await _outputCacheStore.EvictByTagAsync(cacheTag, default);
 
             return Ok();           
         }
