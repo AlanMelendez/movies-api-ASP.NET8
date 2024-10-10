@@ -11,64 +11,54 @@ namespace PeliculasAPI.Controllers
     public class GenerosController : ControllerBase
     {
         private const string cacheTag = "genders";
-        private readonly IRepositoy _repositoryInMemory;
         private readonly IOutputCacheStore _outputCacheStore;
 
-        public GenerosController(IRepositoy repository, IOutputCacheStore outputCacheStore)
+        public GenerosController(IOutputCacheStore outputCacheStore)
         {
-            _repositoryInMemory = repository;
             _outputCacheStore = outputCacheStore;
+        }
+
+        [HttpGet]
+        [OutputCache(Tags = [cacheTag])]
+        public List<Genero> Get()
+        {
+            return new List<Genero>()
+            {
+                new Genero{Id=1, Nombre="Comedia"},
+                new Genero{Id=2, Nombre="Accion"}
+            };
         }
 
         [HttpGet("{id}")]
         [OutputCache(Tags =[cacheTag])]
         public async Task<ActionResult<Genero>> GetGenero(int id)
         {
-            var genero = await _repositoryInMemory.getGenderById(id);
-            if (genero == null)
-            {
-                return NotFound();
-            }
-            return genero;
+            throw new NotImplementedException();
         }
 
-
-        [HttpGet("Listado")]
-        [OutputCache(Tags = [cacheTag])]
-
-        public IEnumerable<Genero> GetGeneros()
-        {
-            var generos = _repositoryInMemory.getAllGenders();
-
-            return generos;
-            //return _repositoryInMemory.getAllGenders();
-        }
 
         [HttpPost]
         [OutputCache(Tags = [cacheTag])]
         public async Task< IActionResult> Post([FromBody] Genero genero)
         {
-             var existGenderWithDealName= _repositoryInMemory.ExistsGender(genero.Nombre);
+            throw new NotImplementedException();
 
-            if (existGenderWithDealName) { 
-                return BadRequest($"If exist gender with this name {genero.Nombre}");
-            }
-
-            await _outputCacheStore.EvictByTagAsync(cacheTag, default);
-
-            return Ok();           
         }
 
         [HttpPut]
         public void Put()
         {
             //return Ok("Put controllers activated");
+            throw new NotImplementedException();
+
         }
 
         [HttpDelete]
         public void Delete()
         {
             //return Ok("Delete controllers activated");
+            throw new NotImplementedException();
+
         }
 
     }
