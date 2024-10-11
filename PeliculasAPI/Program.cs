@@ -19,11 +19,13 @@ builder.Services.AddOutputCache(
     }    
 );
 
+var originsAllowed = builder.Configuration.GetValue<string>("origenesPermitidos")!.Split(",");
+
 builder.Services.AddCors(
     (opciones) =>{
         opciones.AddDefaultPolicy(
             (opcionesCORS) => { 
-                opcionesCORS.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); 
+                opcionesCORS.WithOrigins(originsAllowed).AllowAnyMethod().AllowAnyHeader(); 
             }
         );
     }
