@@ -1,4 +1,6 @@
 using APP_PELICULAS.Services;
+using Microsoft.EntityFrameworkCore;
+using PeliculasAPI;
 using PeliculasAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,11 @@ builder.Services.AddCors(
             }
         );
     }
+ );
+
+// Add DBContext
+builder.Services.AddDbContext<ApplicationDBContext>(
+    options => options.UseSqlServer("name=DefaultConnection")
  );
 
 // For inject dependency
