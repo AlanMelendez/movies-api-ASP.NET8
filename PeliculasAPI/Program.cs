@@ -19,6 +19,16 @@ builder.Services.AddOutputCache(
     }    
 );
 
+builder.Services.AddCors(
+    (opciones) =>{
+        opciones.AddDefaultPolicy(
+            (opcionesCORS) => { 
+                opcionesCORS.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); 
+            }
+        );
+    }
+ );
+
 // For inject dependency
 builder.Services.AddSingleton<IRepositoy ,RepositoryInMemory>();
 
@@ -32,7 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseOutputCache(); //Agregamos el servicio de cache para las peticiones.
 
 app.MapControllers(); //Mapeamos los controladores, para poder crear nuestra carpeta y controladores. (2)
