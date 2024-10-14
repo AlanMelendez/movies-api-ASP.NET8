@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using APP_PELICULAS.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace PeliculasAPI
 {
@@ -8,5 +9,7 @@ namespace PeliculasAPI
         {
 
         }
+
+        public DbSet<Genero> Generos { get; set; }
     }
 }
