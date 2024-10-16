@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 //Mapeamos los controladores, para poder crear nuestra carpeta y controladores. (1)
 builder.Services.AddControllers();
 

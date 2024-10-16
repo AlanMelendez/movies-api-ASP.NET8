@@ -1,9 +1,9 @@
+﻿using PeliculasAPI.Validations;
 using System.ComponentModel.DataAnnotations;
-using PeliculasAPI.Validations;
 
-namespace APP_PELICULAS.Entities
+namespace PeliculasAPI.DTOs
 {
-    public class Genero
+    public class GeneroCreacionDTO
     {
         public int Id { get; set; }
 
