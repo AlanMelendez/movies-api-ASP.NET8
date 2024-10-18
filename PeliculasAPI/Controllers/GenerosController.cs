@@ -35,6 +35,7 @@ namespace PeliculasAPI.Controllers
             await HttpContext.InsertarParametrosPaginacionCabecera(queryable);
 
             return await  queryable
+                          .OrderBy(x => x.Nombre)
                           .Paginar(paginacion)
                           .ProjectTo<GeneroDTO>(_mapper.ConfigurationProvider)
                           .ToListAsync();
