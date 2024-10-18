@@ -51,7 +51,16 @@ namespace PeliculasAPI.Controllers
         [OutputCache(Tags =[cacheTag])]
         public async Task<ActionResult<GeneroDTO>> GetGenero(int id)
         {
-            throw new NotImplementedException();
+            var genero = await _applicationDBContext.Generos
+                .ProjectTo<GeneroDTO>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if(genero == null)
+            {
+                return NotFound();
+            }
+
+            return genero;
         }
 
 
