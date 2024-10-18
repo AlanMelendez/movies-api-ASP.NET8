@@ -71,15 +71,36 @@ namespace PeliculasAPI.Controllers
             var genero = _mapper.Map<Genero>(generoCreacionDTO);
             _applicationDBContext.Add(genero);
             await _applicationDBContext.SaveChangesAsync();
+
+            //Clean cache
+            await _outputCacheStore.EvictByTagAsync(cacheTag, default);
+
             return CreatedAtRoute("ObtenerGeneroPorID", new {id = generoCreacionDTO.Id}, generoCreacionDTO);
 
         }
 
-        [HttpPut]
-        public void Put()
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, [FromBody] GeneroCreacionDTO generoCreacionDTO)
         {
-            //return Ok("Put controllers activated");
-            throw new NotImplementedException();
+
+            var generoExiste = await _applicationDBContext.Generos.AnyAsync(x => x.Id == id);
+
+            if (!generoExiste)
+            {
+                return NotFound();
+            }
+
+            var genero = _mapper.Map<Genero>(generoCreacionDTO);
+
+            genero.Id = id;
+
+            _applicationDBContext.Update(genero);
+            await _applicationDBContext.SaveChangesAsync();
+
+            //Clean cache
+            await _outputCacheStore.EvictByTagAsync(cacheTag, default);
+
+            return NoContent();
 
         }
 
