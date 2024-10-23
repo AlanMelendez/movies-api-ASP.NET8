@@ -15,6 +15,8 @@ namespace PeliculasAPI.Utilidades
         {
                CreateMap<GeneroCreacionDTO, GeneroDTO>();
                CreateMap<Genero, GeneroDTO>();
+               CreateMap<GeneroCreacionDTO, Genero>();
+
 
         }
     }
