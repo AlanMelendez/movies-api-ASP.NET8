@@ -2,6 +2,7 @@ using APP_PELICULAS.Services;
 using Microsoft.EntityFrameworkCore;
 using PeliculasAPI;
 using PeliculasAPI.Interfaces;
+using PeliculasAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,9 @@ builder.Services.AddCors(
 builder.Services.AddDbContext<ApplicationDBContext>(
     options => options.UseSqlServer("name=DefaultConnection")
  );
+
+//Azure services
+builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
 
 // For inject dependency
 builder.Services.AddSingleton<IRepositoy ,RepositoryInMemory>();

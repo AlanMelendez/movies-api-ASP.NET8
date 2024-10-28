@@ -1,3 +1,7 @@
+# Ignorar archivos de configuración sensibles
+appsettings.Development.json
+
+
 # Compiled object files
 *.o
 *.obj
