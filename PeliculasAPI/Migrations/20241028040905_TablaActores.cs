@@ -28,7 +28,7 @@ namespace PeliculasAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
                     FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Foto = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false)
+                    Foto = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true)
                 },
                 constraints: table =>
                 {

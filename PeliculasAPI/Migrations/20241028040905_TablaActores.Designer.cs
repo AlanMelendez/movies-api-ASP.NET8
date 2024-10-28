@@ -12,7 +12,7 @@ using PeliculasAPI;
 namespace PeliculasAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241028030445_TablaActores")]
+    [Migration("20241028040905_TablaActores")]
     partial class TablaActores
     {
         /// <inheritdoc />
@@ -55,7 +55,6 @@ namespace PeliculasAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Foto")
-                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)");
 
