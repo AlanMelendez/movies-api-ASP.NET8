@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using PeliculasAPI;
 using PeliculasAPI.DTOs;
 using PeliculasAPI.Entidades;
+using PeliculasAPI.Services;
 
 namespace PeliculasAPI.Controllers
 {
@@ -20,13 +21,19 @@ namespace PeliculasAPI.Controllers
         private readonly ApplicationDBContext _context;
         private readonly IMapper _mapper;
         private readonly IOutputCacheStore _cache;
-        private const string cacheTag = "actors";
+        private readonly IAlmacenadorArchivos _almacenadorArchivos;
 
-        public ActorsController(ApplicationDBContext context, IMapper mapper, IOutputCacheStore cache)
+
+        private const string cacheTag = "actors";
+        private readonly string contenedor = "actores";
+
+
+        public ActorsController(ApplicationDBContext context, IMapper mapper, IOutputCacheStore cache, IAlmacenadorArchivos almacenadorArchivos)
         {
             _context = context;
             _mapper = mapper;
             _cache = cache;
+            _almacenadorArchivos = almacenadorArchivos;
         }
 
 
@@ -41,13 +48,18 @@ namespace PeliculasAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromForm] ActorCreacionDTO actorCreacionDTO)
         {
-            var actor = _mapper.Map<Actor>(actorCreacionDTO);
-
-            //TODO: Pendiente trabajar la foto del actor.
-
-            _context.Add(actor);
+           
             try
             {
+                var actor = _mapper.Map<Actor>(actorCreacionDTO);
+
+                if (actorCreacionDTO.Foto != null)
+                {
+                    var urlFoto  = await _almacenadorArchivos.Almacenar(contenedor, actorCreacionDTO.Foto);
+                    actor.Foto = urlFoto;
+                }
+
+                _context.Add(actor);
                 await _context.SaveChangesAsync();
 
             }
