@@ -42,8 +42,15 @@ builder.Services.AddDbContext<ApplicationDBContext>(
     options => options.UseSqlServer("name=DefaultConnection")
  );
 
-//Azure services
-builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
+
+// Save images in local
+builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosLocal>();
+
+// Other services to save images in Local
+builder.Services.AddHttpContextAccessor(); // It is necessary to use the IHttpContextAccessor interface in the AlmacenadorArchivosLocal service.
+
+//Azure services to storage image
+//builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
 
 // For inject dependency
 builder.Services.AddSingleton<IRepositoy ,RepositoryInMemory>();
@@ -60,6 +67,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseOutputCache(); //Agregamos el servicio de cache para las peticiones.
+app.UseStaticFiles(); //Middleware to serve static files
 
 app.MapControllers(); //Mapeamos los controladores, para poder crear nuestra carpeta y controladores. (2)
 app.Run();

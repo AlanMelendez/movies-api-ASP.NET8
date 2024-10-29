@@ -67,3 +67,4 @@ logs/
 *.bak
 *.swp
 *.tmp
+/PeliculasAPI/appsettings.Development.json
