@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -11,6 +12,7 @@ using PeliculasAPI;
 using PeliculasAPI.DTOs;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Services;
+using PeliculasAPI.Utilidades;
 
 namespace PeliculasAPI.Controllers
 {
@@ -37,13 +39,41 @@ namespace PeliculasAPI.Controllers
         }
 
 
+        [HttpGet]
+        [OutputCache(Tags = [cacheTag])]
+        public async Task<List<ActorDTO>> Get([FromQuery] PaginacionDTO paginacion)
+        {
+            var queryable = _context.Actores.AsQueryable();
+            await HttpContext.InsertarParametrosPaginacionCabecera(queryable);
+            var actores = await queryable
+                .OrderBy(x => x.Nombre)
+                .Paginar(paginacion)
+                .ProjectTo<ActorDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return actores;
+        }
+
 
         // GET: api/Actors/5
         [HttpGet("{id}", Name = "ObtenerActorPorID")]
-        public void Get(int id)
+        [OutputCache(Tags = [cacheTag])]
+        public async Task<ActionResult<ActorDTO>> Get(int id)
         {
-            throw new NotImplementedException();
+            var actor = await _context.Actores
+                        .ProjectTo<ActorDTO>(_mapper.ConfigurationProvider)
+                        .FirstOrDefaultAsync(x => x.Id == id);
+            if(actor == null)
+            {
+                return NotFound();
+            }
+            return actor;
         }
+
+
+
+
+
         //Para recibir la imagen y que el DTO la obtenga, es obligatorio usar el [FromForm]
         [HttpPost]
         public async Task<ActionResult> Post([FromForm] ActorCreacionDTO actorCreacionDTO)
