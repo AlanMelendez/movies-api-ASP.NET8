@@ -6,7 +6,7 @@ namespace PeliculasAPI.DTOs
     public class ActorCreacionDTO
     {
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
         [Required]
         [StringLength(120)]
         public required string Nombre { get; set; }
