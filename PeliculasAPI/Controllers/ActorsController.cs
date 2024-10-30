@@ -61,6 +61,7 @@ namespace PeliculasAPI.Controllers
         public async Task<ActionResult<ActorDTO>> Get(int id)
         {
             var actor = await _context.Actores
+                        .AsQueryable()
                         .ProjectTo<ActorDTO>(_mapper.ConfigurationProvider)
                         .FirstOrDefaultAsync(x => x.Id == id);
             if(actor == null)
@@ -104,6 +105,27 @@ namespace PeliculasAPI.Controllers
             return CreatedAtRoute("ObtenerActorPorID", new { id = actor.Id }, actor);
 
 
+        }
+
+
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, [FromForm] ActorCreacionDTO actorCreacionDTO)
+        {
+            var actorDB = await _context.Actores.FirstOrDefaultAsync(x => x.Id == id);
+            if (actorDB == null)
+            {
+                return NotFound();
+            }
+            actorDB = _mapper.Map(actorCreacionDTO, actorDB);
+            if (actorCreacionDTO.Foto != null)
+            {
+                var urlFoto = await _almacenadorArchivos.Editar(contenedor, actorCreacionDTO.Foto, actorDB.Foto);
+                actorDB.Foto = urlFoto;
+            }
+            await _context.SaveChangesAsync();
+            await _cache.EvictByTagAsync(cacheTag, default);
+            return NoContent();
         }
     }
 }

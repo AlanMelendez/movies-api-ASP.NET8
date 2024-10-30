@@ -68,3 +68,4 @@ logs/
 *.swp
 *.tmp
 /PeliculasAPI/appsettings.Development.json
+/PeliculasAPI/wwwroot/actores
