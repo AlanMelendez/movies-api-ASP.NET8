@@ -64,7 +64,7 @@ namespace PeliculasAPI.Controllers
                         .AsQueryable()
                         .ProjectTo<ActorDTO>(_mapper.ConfigurationProvider)
                         .FirstOrDefaultAsync(x => x.Id == id);
-            if(actor == null)
+            if (actor == null)
             {
                 return NotFound();
             }
@@ -86,7 +86,7 @@ namespace PeliculasAPI.Controllers
 
                 if (actorCreacionDTO.Foto != null)
                 {
-                    var urlFoto  = await _almacenadorArchivos.Almacenar(contenedor, actorCreacionDTO.Foto);
+                    var urlFoto = await _almacenadorArchivos.Almacenar(contenedor, actorCreacionDTO.Foto);
                     actor.Foto = urlFoto;
                 }
 
@@ -97,7 +97,7 @@ namespace PeliculasAPI.Controllers
             catch (Exception ex)
             {
 
-                return Ok( ex.Message);
+                return Ok(ex.Message);
             }
             await _cache.EvictByTagAsync(cacheTag, default);
             //return Ok(actor);
@@ -124,6 +124,20 @@ namespace PeliculasAPI.Controllers
                 actorDB.Foto = urlFoto;
             }
             await _context.SaveChangesAsync();
+            await _cache.EvictByTagAsync(cacheTag, default);
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var registroBorrado = await _context.Actores.Where(x => x.Id == id).ExecuteDeleteAsync();
+
+            if(registroBorrado == 0)
+            {
+                return NotFound();
+            }
+
             await _cache.EvictByTagAsync(cacheTag, default);
             return NoContent();
         }
